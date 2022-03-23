@@ -14,7 +14,7 @@ jobs:
       - name: pre-job output
         run: |
           echo ${{ github.event.pull_request.head.sha }}
-          cat test.txt
+          cat hoge.txt
 
   update-file:
     runs-on: ubuntu-latest
@@ -25,7 +25,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Update file
-        run: echo ${{ github.event.pull_request.head.sha }} >> test.txt
+        run: echo ${{ github.event.pull_request.head.sha }} >> hoge.txt
 
       - name: Git config
         run: |
@@ -46,7 +46,7 @@ jobs:
       - name: update-file output
         run: |
           echo ${{ github.event.pull_request.head.sha }}
-          cat test.txt
+          cat hoge.txt
 
   post-job:
     runs-on: ubuntu-latest
@@ -59,4 +59,4 @@ jobs:
       - name: pre-job output
         run: |
           echo ${{ github.event.pull_request.head.sha }}
-          cat test.txt
+          cat hoge.txt
