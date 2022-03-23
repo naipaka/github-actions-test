@@ -1,0 +1,62 @@
+name: On update files
+
+on:
+  pull_request:
+
+jobs:
+  pre-job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: pre-job output
+        run: |
+          echo ${{ github.event.pull_request.head.sha }}
+          cat test.txt
+
+  update-file:
+    runs-on: ubuntu-latest
+    needs: pre-job
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Update file
+        run: echo ${{ github.event.pull_request.head.sha }} >> test.txt
+
+      - name: Git config
+        run: |
+          git remote set-url origin https://github-actions:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push updated file
+        run: |
+          git add .
+          git commit -m "update file"
+          git push origin ${{ github.event.pull_request.head.ref }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: update-file output
+        run: |
+          echo ${{ github.event.pull_request.head.sha }}
+          cat test.txt
+
+  post-job:
+    runs-on: ubuntu-latest
+    needs: update-file
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: pre-job output
+        run: |
+          echo ${{ github.event.pull_request.head.sha }}
+          cat test.txt

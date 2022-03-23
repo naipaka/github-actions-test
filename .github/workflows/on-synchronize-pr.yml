@@ -1,0 +1,12 @@
+name: Run on PR synchronize
+
+on:
+  pull_request:
+    types: [synchronize]
+
+jobs:
+  synchronize-test:
+    runs-on: ubuntu-latest
+    steps:
+      - id: step1
+        run: echo "synchronize 🔄"
