@@ -23,7 +23,7 @@ jobs:
 
       - name: Check diff count
         id: check_bump
-        run: echo "::set-output name=count::$(git diff main | grep hoge.txt | wc -l)"
+        run: echo "::set-output name=count::$(git diff main..${GITHUB_REF_NAME} | grep hoge.txt | wc -l)"
 
       - name: Check diff count
         run: echo ${{ steps.check_bump.outputs.count }}
