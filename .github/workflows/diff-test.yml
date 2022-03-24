@@ -1,6 +1,9 @@
 name: diff test
 
-on: push
+on:
+  push:
+    branches:
+      - "feature/**"
 
 jobs:
   job1:
