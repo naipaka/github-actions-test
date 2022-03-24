@@ -10,9 +10,16 @@ jobs:
       - id: step1
         run: echo "run job1 🏃‍♂️"
 
+      - name: Output
+        run: echo "::set-output name=count::1"
+
   job2:
     runs-on: ubuntu-latest
     needs: job1
+    if: ${{ needs.job1.outputs.count == 0 }}
     steps:
       - id: step1
         run: echo "run job2 🏃‍♀️"
+
+      - id: needs output
+        run: echo ${{ needs.job1.outputs.count }}
