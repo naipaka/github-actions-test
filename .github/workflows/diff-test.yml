@@ -1,4 +1,4 @@
-name: need test
+name: diff test
 
 on: push
 
