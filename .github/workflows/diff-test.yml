@@ -14,7 +14,7 @@ jobs:
       - name: Fetch main
         run: |
           git fetch origin main --depth=1
-          git git switch -c main origin/main
+          git switch -c main origin/main
           git switch ${GITHUB_REF#refs/heads/}
 
       - name: Git Status
