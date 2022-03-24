@@ -17,9 +17,9 @@ jobs:
           echo "😀"
           git log
           echo "😀"
-          git log
-          echo "😀"
           git checkout ${GITHUB_REF#refs/heads/}
+          echo "😀"
+          git log
 
       - name: Git Status
         run: git status
