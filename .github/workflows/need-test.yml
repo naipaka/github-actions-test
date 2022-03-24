@@ -6,7 +6,7 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     steps:
-      - id: step
+      - name: step
         run: echo "run job1 🏃‍♂️"
 
       - name: Output
@@ -17,8 +17,8 @@ jobs:
     needs: job1
     if: ${{ needs.job1.outputs.count == 0 }}
     steps:
-      - id: step
+      - name: step
         run: echo "run job2 🏃‍♀️"
 
-      - id: needs output
+      - name: needs output
         run: echo ${{ needs.job1.outputs.count }}
