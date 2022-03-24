@@ -6,6 +6,7 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: Check diff count
         id: check_bump
         run: echo "::set-output name=count::$(git diff main | grep hoge.txt | wc -l)"
