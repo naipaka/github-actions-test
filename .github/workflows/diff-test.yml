@@ -10,13 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
-      - name: Git Status
-        run: git status
-
-      - uses: actions/checkout@v3
-        with:
-          ref: main
+      - run: |
+          git fetch --no-tags --depth=1 origin master
+          git checkout -b master
+          git checkout ${GITHUB_HEAD_REF}
 
       - name: Git Status
         run: git status
@@ -26,12 +23,7 @@ jobs:
 
       - name: Check diff count
         id: check_bump
-        run: echo "::set-output name=count::$(git diff origin/main origin/${GITHUB_HEAD_REF} | grep hoge.txt | wc -l)"
+        run: echo "::set-output name=count::$(git diff main | grep hoge.txt | wc -l)"
 
       - name: Output
         run: echo ${{ steps.check_bump.outputs.count }}
-
-      - name: Check diff
-        run: |
-          MAIN=$(git rev-parse main)
-          git diff $MAIN | grep hoge.txt | wc -l
