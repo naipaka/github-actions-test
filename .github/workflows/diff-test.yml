@@ -9,4 +9,4 @@ jobs:
       - uses: actions/checkout@v3
       - name: Check diff count
         id: check_bump
-        run: echo "::set-output name=count::$(git diff main | grep hoge.txt | wc -l)"
+        run: echo "::set-output name=count::$(git diff origin/main | grep hoge.txt | wc -l)"
