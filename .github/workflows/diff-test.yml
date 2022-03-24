@@ -21,6 +21,12 @@ jobs:
       - name: Git branch
         run: git branch
 
+      - name: Git diff
+        run: git diff main
+
+      - name: Git diff
+        run: git diff main ${GITHUB_REF#refs/heads/}
+
       - name: Check diff count
         id: check_bump
         run: echo "::set-output name=count::$(git diff main | grep hoge.txt | wc -l)"
