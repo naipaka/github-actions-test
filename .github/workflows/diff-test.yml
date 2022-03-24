@@ -11,19 +11,25 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # - name: Git Status
-      #   run: git status
+      - name: Git Status
+        run: git status
 
-      # - uses: actions/checkout@v3
-      #   with:
-      #     path: main
+      - uses: actions/checkout@v3
+        with:
+          path: main
 
-      # - name: Git Status
-      #   run: git status
+      - name: Git Status
+        run: git status
 
       - name: Check diff count
         id: check_bump
         run: echo "::set-output name=count::$(git diff origin/main origin/${GITHUB_HEAD_REF} | grep hoge.txt | wc -l)"
 
-      - name: Check diff count
+      - name: Output
         run: echo ${{ steps.check_bump.outputs.count }}
+
+      - name: Check diff
+        run: |
+          MAIN=$(git rev-parse main)
+          HEAD=$(git rev-parse HEAD)
+          git diff $MAIN $HEAD | grep hoge.txt | wc -l
