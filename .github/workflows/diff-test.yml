@@ -21,6 +21,9 @@ jobs:
       - name: Git Status
         run: git status
 
+      - name: Git branch
+        run: git branch
+
       - name: Check diff count
         id: check_bump
         run: echo "::set-output name=count::$(git diff origin/main origin/${GITHUB_HEAD_REF} | grep hoge.txt | wc -l)"
@@ -31,5 +34,4 @@ jobs:
       - name: Check diff
         run: |
           MAIN=$(git rev-parse main)
-          HEAD=$(git rev-parse HEAD)
-          git diff $MAIN $HEAD | grep hoge.txt | wc -l
+          git diff $MAIN | grep hoge.txt | wc -l
