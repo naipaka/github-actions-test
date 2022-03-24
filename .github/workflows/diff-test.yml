@@ -1,0 +1,26 @@
+name: diff test
+
+on: push
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Git Status
+        run: git status
+
+      - uses: actions/checkout@v3
+        with:
+          path: main
+
+      - name: Git Status
+        run: git status
+
+      - name: Check diff count
+        id: check_bump
+        run: echo "::set-output name=count::$(git diff main | grep hoge.txt | wc -l)"
+
+      - name: Check diff count
+        run: echo ${{ steps.check_bump.outputs.count }}

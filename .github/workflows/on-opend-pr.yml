@@ -1,0 +1,12 @@
+name: Run on PR opened
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  opened-test:
+    runs-on: ubuntu-latest
+    steps:
+      - id: step1
+        run: echo "opend 📖"
