@@ -46,17 +46,19 @@ jobs:
       - extract-version
       - create-tag
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+
+      - name: Extract release page body
+        id: extract-body
+        run: echo "::set-output name=body::$(cat release.txt)"
 
       - name: Create Release
-        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ needs.extract-version.outputs.version }}
           release_name: Release ${{ needs.extract-version.outputs.version }}
-          body: $(cat release.txt)
+          body: ${{ steps.extract-body.outputs.body }}
           draft: false
           prerelease: false
