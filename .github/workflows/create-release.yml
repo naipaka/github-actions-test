@@ -52,7 +52,9 @@ jobs:
         id: extract-body
         run: |
           RELEASE_NOTE=$(cat release.txt)
-          RELEASE_NOTE=${RELEASE_NOTE//$'\n'/\\n}
+          RELEASE_NOTE="${RELEASE_NOTE//'%'/'%25'}"
+          RELEASE_NOTE="${RELEASE_NOTE//$'\n'/'%0A'}"
+          RELEASE_NOTE="${RELEASE_NOTE//$'\r'/'%0D'}" 
           echo "::set-output name=body::${RELEASE_NOTE}"
 
       - name: output
