@@ -10,7 +10,11 @@ jobs:
         run: echo "run job1 🏃‍♂️"
 
       - name: Output
+        id: step_output
         run: echo "::set-output name=count::1"
+
+      - name: Output print
+        run: echo ${{ steps.jobtest.step_output.count }}
 
   job2:
     runs-on: ubuntu-latest
