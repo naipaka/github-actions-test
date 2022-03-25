@@ -67,14 +67,18 @@ jobs:
         run: |
           echo "${{ steps.extract-body.outputs.body }}"
 
-      - name: Create Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ needs.extract-version.outputs.version }}
-          release_name: リリース ${{ needs.extract-version.outputs.version }}
-          body: |
-            ${{ steps.extract-body.outputs.body }}
-          draft: false
-          prerelease: false
+      - name: Create release
+        run: |
+          gh release create v${{ needs.extract-version.outputs.version }} -n ${{ steps.extract-body.outputs.body }} -t "リリース ${{ needs.extract-version.outputs.version }}"
+
+      # - name: Create release
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: v${{ needs.extract-version.outputs.version }}
+      #     release_name: リリース ${{ needs.extract-version.outputs.version }}
+      #     body: |
+      #       ${{ steps.extract-body.outputs.body }}
+      #     draft: false
+      #     prerelease: false
