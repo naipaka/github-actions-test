@@ -68,6 +68,8 @@ jobs:
           echo "${{ steps.extract-body.outputs.body }}"
 
       - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release create v${{ needs.extract-version.outputs.version }} -n ${{ steps.extract-body.outputs.body }} -t "リリース ${{ needs.extract-version.outputs.version }}"
 
