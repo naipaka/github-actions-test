@@ -1,6 +1,9 @@
 name: diff test
 
-on: push
+on:
+  push:
+    branches:
+      - "feature/**"
 
 jobs:
   job1:
@@ -8,19 +11,27 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Fetch main
+        run: |
+          git fetch origin main --depth=1
+          git switch -c main origin/main
+          git switch ${GITHUB_REF#refs/heads/}
+
       - name: Git Status
         run: git status
 
-      - uses: actions/checkout@v3
-        with:
-          path: main
+      - name: Git branch
+        run: git branch
 
-      - name: Git Status
-        run: git status
+      - name: Git diff
+        run: git diff main
+
+      - name: Git diff
+        run: git diff main ${GITHUB_REF#refs/heads/}
 
       - name: Check diff count
         id: check_bump
         run: echo "::set-output name=count::$(git diff main | grep hoge.txt | wc -l)"
 
-      - name: Check diff count
+      - name: Output
         run: echo ${{ steps.check_bump.outputs.count }}

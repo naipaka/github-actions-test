@@ -1,0 +1,62 @@
+name: create tag
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  extract-version:
+    name: Version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.extract-version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Extract version
+        id: extract-version
+        run: |
+          COMMIT_MSG=${{ github.event.head_commit.message }}
+          VERSION=$(echo -e $COMMIT_MSG | perl -pe 's/.*([0-9]\.[0-9]\.[0-9]).*/$1/g;')
+          echo "::set-output name=version::${VERSION}"
+
+      - name: output
+        run: |
+          echo "😀"
+          echo ${{ steps.extract-version.outputs.version }}
+          echo "😀"
+
+  create-tag:
+    name: Create tag
+    runs-on: ubuntu-latest
+    needs: extract-version
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create tag
+        run: |
+          git tag v${{ needs.extract-version.outputs.version }}
+          git push origin v${{ needs.extract-version.outputs.version }}
+
+  create-release-page:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs:
+      - extract-version
+      - create-tag
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ needs.extract-version.outputs.version }}
+          release_name: Release ${{ needs.extract-version.outputs.version }}
+          body: $(cat release.txt)
+          draft: false
+          prerelease: false
