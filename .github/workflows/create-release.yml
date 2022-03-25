@@ -34,6 +34,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Git config
+        run: |
+          git remote set-url origin https://github-actions:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+
       - name: Create tag
         run: |
           git tag v${{ needs.extract-version.outputs.version }}
@@ -67,7 +73,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ needs.extract-version.outputs.version }}
-          release_name: Release ${{ needs.extract-version.outputs.version }}
+          release_name: リリース ${{ needs.extract-version.outputs.version }}
           body: |
             ${{ steps.extract-body.outputs.body }}
           draft: false
