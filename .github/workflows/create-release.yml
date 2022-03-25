@@ -58,7 +58,8 @@ jobs:
           echo "::set-output name=body::${RELEASE_NOTE}"
 
       - name: output
-        run: echo ${{ steps.extract-body.outputs.body }}
+        run: |
+          echo "${{ steps.extract-body.outputs.body }}"
 
       - name: Create Release
         uses: actions/create-release@v1
