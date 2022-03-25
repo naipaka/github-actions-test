@@ -51,15 +51,12 @@ jobs:
       - name: Extract release page body
         id: extract-body
         run: |
-          echo $(cat release.txt)
-          echo "::set-output name=body::$(cat release.txt)"
+          RELEASE_NOTE=$(cat release.txt)
+          RELEASE_NOTE=${RELEASE_NOTE//$'\n'/\\n}
+          echo "::set-output name=body::${RELEASE_NOTE}"
 
       - name: output
         run: echo ${{ steps.extract-body.outputs.body }}
-
-      - name: output
-        run: |
-          echo ${{ steps.extract-body.outputs.body }}
 
       - name: Create Release
         uses: actions/create-release@v1
