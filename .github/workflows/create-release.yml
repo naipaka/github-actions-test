@@ -18,7 +18,7 @@ jobs:
         id: extract-version
         run: |
           COMMIT_MSG="${{ github.event.head_commit.message }}"
-          VERSION=$(echo -e $COMMIT_MSG | perl -pe 's/.*([0-9]\.[0-9]\.[0-9]).*/$1/g;')
+          VERSION=$(echo -e $COMMIT_MSG | perl -pe 's/.*\/([0-9]+\.[0-9]+\.[0-9]+).*/$1/g;')
           echo "::set-output name=version::${VERSION}"
 
       - name: output
@@ -50,7 +50,16 @@ jobs:
 
       - name: Extract release page body
         id: extract-body
-        run: echo "::set-output name=body::$(cat release.txt)"
+        run: |
+          echo $(cat release.txt)
+          echo "::set-output name=body::$(cat release.txt)"
+
+      - name: output
+        run: echo ${{ steps.extract-body.outputs.body }}
+
+      - name: output
+        run: |
+          echo ${{ steps.extract-body.outputs.body }}
 
       - name: Create Release
         uses: actions/create-release@v1
@@ -59,6 +68,7 @@ jobs:
         with:
           tag_name: v${{ needs.extract-version.outputs.version }}
           release_name: Release ${{ needs.extract-version.outputs.version }}
-          body: ${{ steps.extract-body.outputs.body }}
+          body: |
+            ${{ steps.extract-body.outputs.body }}
           draft: false
           prerelease: false
