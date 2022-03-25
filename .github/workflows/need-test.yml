@@ -5,6 +5,8 @@ on: push
 jobs:
   job1:
     runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.step_output.outputs.count }}
     steps:
       - name: step
         run: echo "run job1 🏃‍♂️"
@@ -12,9 +14,6 @@ jobs:
       - name: Output
         id: step_output
         run: echo "::set-output name=count::1"
-
-      - name: Output print
-        run: echo ${{ steps.jobtest.step_output.count }}
 
   job2:
     runs-on: ubuntu-latest
