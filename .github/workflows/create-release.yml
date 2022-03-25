@@ -67,12 +67,11 @@ jobs:
         run: |
           echo "${{ steps.extract-body.outputs.body }}"
 
-      - name: Create release PR to main
-        if: ${{ steps.check_pr.outputs.count == 0 }}
+      - name: Create release
         run: |
           gh release create v${{ needs.extract-version.outputs.version }} -n ${{ steps.extract-body.outputs.body }} -t "リリース ${{ needs.extract-version.outputs.version }}"
 
-      # - name: Create Release
+      # - name: Create release
       #   uses: actions/create-release@v1
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
